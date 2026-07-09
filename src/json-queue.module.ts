@@ -1,15 +1,17 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
+import { DiscoveryModule } from '@nestjs/core';
 
 import { getJsonQueueToken } from './helpers';
 import { JsonQueueImpl } from './json-queue.impl';
+import { JsonQueueRunner } from './json-queue.runner';
 import { JsonQueueModuleAsyncOptions, JsonQueueModuleOptions, JsonQueueModuleProviderMap } from './types';
 
 @Module({})
 export class JsonQueueModule {
   private static createProviderMap(options: Array<JsonQueueModuleOptions | JsonQueueModuleAsyncOptions>): JsonQueueModuleProviderMap {
     const providerMap: JsonQueueModuleProviderMap = {
-      imports: [],
-      providers: [],
+      imports: [DiscoveryModule],
+      providers: [JsonQueueRunner],
       exports: [],
     };
 
