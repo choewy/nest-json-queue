@@ -1,9 +1,9 @@
+import { Injectable, Module, ModuleMetadata, Optional } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 
 import { InjectJsonQueue, JsonQueue, JsonQueueModule } from '@libs';
 import { getJsonQueueToken } from '@libs/helpers';
 import { JsonQueueImpl } from '@libs/json-queue.impl';
-import { Injectable, Module, ModuleMetadata, Optional } from '@nestjs/common';
 
 const TestQueueName = 'TestQueue';
 

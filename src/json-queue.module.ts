@@ -1,7 +1,8 @@
 import { DynamicModule, Module, Provider } from '@nestjs/common';
-import { JsonQueueModuleAsyncOptions, JsonQueueModuleOptions, JsonQueueModuleProviderMap } from './types';
+
 import { getJsonQueueToken } from './helpers';
 import { JsonQueueImpl } from './json-queue.impl';
+import { JsonQueueModuleAsyncOptions, JsonQueueModuleOptions, JsonQueueModuleProviderMap } from './types';
 
 @Module({})
 export class JsonQueueModule {
