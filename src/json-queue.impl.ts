@@ -4,7 +4,6 @@ import { Injectable } from '@nestjs/common';
 
 import { randomUUID } from 'node:crypto';
 
-import { JsonQueueOptionResolver } from './config/json-queue-option.resolver';
 import { JsonQueueResolvedOptions } from './config/types';
 import { JsonQueueFilename } from './file/json-queue-filename';
 import { JsonQueue } from './json-queue';
@@ -12,21 +11,18 @@ import { JsonQueueHistory } from './lifecycle/json-queue-history';
 import { JsonQueueInitializer } from './lifecycle/json-queue-initializer';
 import { JsonQueueRecovery } from './lifecycle/json-queue-recovery';
 import { JsonQueueLock } from './lock/json-queue-lock';
-import { JsonFileStore } from './storage/json-file.store';
 import { JsonQueueJobStore } from './storage/json-queue-job.store';
 import { JsonQueueMetaStore } from './storage/json-queue-meta.store';
 import { JsonQueueWaitingStore } from './storage/json-queue-waiting.store';
-import { JsonQueueJob, type JsonQueueOptions, JsonQueuePaths } from './types';
+import { JsonQueueJob, JsonQueuePaths, type JsonQueueProps } from './types';
 
 @Injectable()
 export class JsonQueueImpl<T = unknown, R = unknown> implements JsonQueue<T, R> {
   private readonly name: string;
   private readonly options: JsonQueueResolvedOptions;
   private readonly paths: JsonQueuePaths;
-
   private readonly filename: JsonQueueFilename;
   private readonly lock: JsonQueueLock;
-  private readonly fileStore: JsonFileStore;
   private readonly jobStore: JsonQueueJobStore<T, R>;
   private readonly metaStore: JsonQueueMetaStore;
   private readonly waitingStore: JsonQueueWaitingStore;
@@ -34,65 +30,18 @@ export class JsonQueueImpl<T = unknown, R = unknown> implements JsonQueue<T, R> 
   private readonly history: JsonQueueHistory;
   private readonly recovery: JsonQueueRecovery<T, R>;
 
-  // TODO refactor DI
-  constructor(name: string, options: JsonQueueOptions) {
-    const resolved = new JsonQueueOptionResolver().resolve(name, options);
-
-    this.name = name;
-    this.options = resolved.options;
-    this.paths = resolved.paths;
-
-    this.filename = new JsonQueueFilename();
-
-    this.fileStore = new JsonFileStore({
-      tmpPath: this.paths.tmp,
-    });
-
-    this.jobStore = new JsonQueueJobStore<T, R>({
-      paths: this.paths,
-      fileStore: this.fileStore,
-      filename: this.filename,
-    });
-
-    this.metaStore = new JsonQueueMetaStore({
-      metaPath: this.paths.meta,
-      fileStore: this.fileStore,
-    });
-
-    this.waitingStore = new JsonQueueWaitingStore({
-      waitingPath: this.paths.waiting,
-      fileStore: this.fileStore,
-    });
-
-    this.initializer = new JsonQueueInitializer({
-      options: this.options,
-      paths: this.paths,
-      fileStore: this.fileStore,
-      metaStore: this.metaStore,
-      waitingStore: this.waitingStore,
-    });
-
-    this.history = new JsonQueueHistory({
-      options: this.options,
-      paths: this.paths,
-      jobStore: this.jobStore,
-    });
-
-    this.recovery = new JsonQueueRecovery<T, R>({
-      options: this.options,
-      paths: this.paths,
-      jobStore: this.jobStore,
-      waitingStore: this.waitingStore,
-      history: this.history,
-    });
-
-    this.lock = new JsonQueueLock({
-      name: this.name,
-      basePath: this.options.basePath,
-      lockPath: this.paths.lock,
-      lockTimeout: this.options.lockTimeout,
-      lockRetryDelay: this.options.lockRetryDelay,
-    });
+  constructor(options: JsonQueueProps<T, R>) {
+    this.name = options.name;
+    this.options = options.options;
+    this.paths = options.paths;
+    this.filename = options.filename;
+    this.lock = options.lock;
+    this.jobStore = options.jobStore;
+    this.metaStore = options.metaStore;
+    this.waitingStore = options.waitingStore;
+    this.initializer = options.initializer;
+    this.history = options.history;
+    this.recovery = options.recovery;
   }
 
   async add(data: T, jobId?: string): Promise<string> {

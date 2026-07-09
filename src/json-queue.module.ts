@@ -1,8 +1,10 @@
+// json-queue.module.ts
+
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { DiscoveryModule } from '@nestjs/core';
 
 import { getJsonQueueToken } from './helpers';
-import { JsonQueueImpl } from './json-queue.impl';
+import { JsonQueueFactory } from './json-queue.factory';
 import { JsonQueueRunner } from './json-queue.runner';
 import { JsonQueueModuleAsyncOptions, JsonQueueModuleOptions, JsonQueueModuleProviderMap } from './types';
 
@@ -11,25 +13,29 @@ export class JsonQueueModule {
   private static createProviderMap(options: Array<JsonQueueModuleOptions | JsonQueueModuleAsyncOptions>): JsonQueueModuleProviderMap {
     const providerMap: JsonQueueModuleProviderMap = {
       imports: [DiscoveryModule],
-      providers: [JsonQueueRunner],
+      providers: [JsonQueueRunner, JsonQueueFactory],
       exports: [],
     };
 
     for (const option of options) {
       const provide = getJsonQueueToken(option.name);
+
       const provider: Provider =
         'useFactory' in option
           ? {
               provide,
-              inject: option.inject,
-              useFactory: async (...args: unknown[]) => {
-                return new JsonQueueImpl(option.name, await option.useFactory(...args));
+              inject: [JsonQueueFactory, ...(option.inject ?? [])],
+              useFactory: async (queueFactory: JsonQueueFactory, ...args: unknown[]) => {
+                const queueOptions = await option.useFactory(...args);
+
+                return queueFactory.create(option.name, queueOptions);
               },
             }
           : {
               provide,
-              useFactory: () => {
-                return new JsonQueueImpl(option.name, option.options);
+              inject: [JsonQueueFactory],
+              useFactory: (queueFactory: JsonQueueFactory) => {
+                return queueFactory.create(option.name, option.options);
               },
             };
 
