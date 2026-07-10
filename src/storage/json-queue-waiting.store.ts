@@ -1,5 +1,3 @@
-// storage/json-queue-waiting.store.ts
-
 import { Injectable } from '@nestjs/common';
 
 import { JsonQueueWaitingList } from '../types';

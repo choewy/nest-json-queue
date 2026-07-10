@@ -1,5 +1,3 @@
-// lifecycle/json-queue-recovery.ts
-
 import { Injectable } from '@nestjs/common';
 
 import { JsonQueueJob } from '../types';

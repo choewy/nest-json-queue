@@ -1,5 +1,3 @@
-// json-queue.impl.ts
-
 import { Injectable } from '@nestjs/common';
 
 import { randomUUID } from 'node:crypto';
@@ -18,7 +16,6 @@ import { JsonQueueJob, JsonQueuePaths, type JsonQueueProps } from './types';
 
 @Injectable()
 export class JsonQueueImpl<T = unknown, R = unknown> implements JsonQueue<T, R> {
-  private readonly name: string;
   private readonly options: JsonQueueResolvedOptions;
   private readonly paths: JsonQueuePaths;
   private readonly filename: JsonQueueFilename;
@@ -31,7 +28,6 @@ export class JsonQueueImpl<T = unknown, R = unknown> implements JsonQueue<T, R> 
   private readonly recovery: JsonQueueRecovery<T, R>;
 
   constructor(options: JsonQueueProps<T, R>) {
-    this.name = options.name;
     this.options = options.options;
     this.paths = options.paths;
     this.filename = options.filename;
@@ -48,7 +44,7 @@ export class JsonQueueImpl<T = unknown, R = unknown> implements JsonQueue<T, R> 
     return this.lock.run(async () => {
       await this.initializer.ensure();
 
-      const id = jobId ?? randomUUID();
+      const id = jobId ?? `${Date.now()}-${randomUUID()}`;
       const existingJob = await this.jobStore.findById(id);
 
       if (existingJob) {

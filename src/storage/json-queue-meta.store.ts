@@ -1,5 +1,3 @@
-// storage/json-queue-meta.store.ts
-
 import { Injectable } from '@nestjs/common';
 
 import { JsonQueueMeta } from '../types';

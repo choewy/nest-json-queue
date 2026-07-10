@@ -1,5 +1,3 @@
-// storage/json-file.store.ts
-
 import { Injectable } from '@nestjs/common';
 
 import { randomUUID } from 'node:crypto';

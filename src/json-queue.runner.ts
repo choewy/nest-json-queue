@@ -1,4 +1,3 @@
-// json-queue-consumer.runner.ts
 import { Injectable, Logger, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
 import { DiscoveryService, ModuleRef, Reflector } from '@nestjs/core';
 

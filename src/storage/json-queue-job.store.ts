@@ -1,5 +1,3 @@
-// storage/json-queue-job.store.ts
-
 import { Injectable } from '@nestjs/common';
 
 import { resolve } from 'node:path';
@@ -30,7 +28,7 @@ export class JsonQueueJobStore<T = unknown, R = unknown> {
   async readFiles(dirPath: string): Promise<string[]> {
     const files = await this.options.fileStore.readDir(dirPath);
 
-    return files.filter((file) => this.options.filename.isJobFilename(file)).sort((a, b) => this.options.filename.compare(a, b));
+    return files.filter((file) => this.options.filename.isJob(file)).sort((a, b) => this.options.filename.compare(a, b));
   }
 
   existsInWaiting(filename: string): boolean {

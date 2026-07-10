@@ -1,5 +1,3 @@
-// lifecycle/json-queue-history.ts
-
 import { Injectable } from '@nestjs/common';
 
 import { type JsonQueueHistoryOptions } from './types';

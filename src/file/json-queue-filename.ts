@@ -55,7 +55,7 @@ export class JsonQueueFilename {
     return a.localeCompare(b);
   }
 
-  isJobFilename(filename: string): boolean {
+  isJob(filename: string): boolean {
     return this.parse(filename) !== null;
   }
 }

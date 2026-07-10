@@ -1,5 +1,3 @@
-// json-queue.factory.ts
-
 import { Injectable } from '@nestjs/common';
 
 import { JsonQueueOptionResolver } from './config/json-queue-option.resolver';

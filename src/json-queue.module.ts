@@ -1,5 +1,3 @@
-// json-queue.module.ts
-
 import { DynamicModule, Module, Provider } from '@nestjs/common';
 import { DiscoveryModule } from '@nestjs/core';
 

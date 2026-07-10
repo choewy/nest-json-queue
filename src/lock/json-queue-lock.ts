@@ -1,5 +1,3 @@
-// lock/json-queue-lock.ts
-
 import { Injectable } from '@nestjs/common';
 
 import { existsSync } from 'node:fs';
