@@ -1,0 +1,13 @@
+.husky
+node_modules
+apps
+src
+test
+releaserc.json
+eslint.config.mjs
+tsconfig.build.json
+tsconfig.json
+nest-cli.json
+.prettierrc
+.gitignore
+.npmignore
