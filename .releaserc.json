@@ -1,6 +1,6 @@
 {
   "branches": ["main"],
-  "tagFormat": "nest-json-queue-v${version}",
+  "tagFormat": "v${version}",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
