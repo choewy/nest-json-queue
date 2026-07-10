@@ -58,12 +58,24 @@
         ]
       }
     ],
-    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "preset": "conventionalcommits"
+      }
+    ],
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "echo $nextRelease.version"
+        "prepareCmd": "pnpm run build"
       }
-    ]
+    ],
+    [
+      "@semantic-release/npm",
+      {
+        "npmPublish": true
+      }
+    ],
+    "@semantic-release/github"
   ]
 }

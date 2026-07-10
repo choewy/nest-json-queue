@@ -1,20 +1,31 @@
 {
   "name": "nest-json-queue",
-  "version": "1.0.0",
-  "description": "NestJS JSON Queue",
-  "main": "dist/src/index.js",
+  "version": "0.0.0",
+  "description": "A persistent JSON file queue for NestJS",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "provenance": true
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/choewy/nest-json-queue.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/choewy/nest-json-queue/issues"
-  },
-  "homepage": "https://github.com/choewy/nest-json-queue#readme",
   "scripts": {
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "start": "nodemon -w src -e ts --exec ts-node src/index.ts",
@@ -42,6 +53,7 @@
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^13.1.5",
     "@semantic-release/release-notes-generator": "^14.1.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
@@ -92,5 +104,12 @@
     "roots": [
       "<rootDir>/apps/"
     ]
-  }
+  },
+  "keywords": [],
+  "author": "choewy",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/choewy/nest-json-queue/issues"
+  },
+  "homepage": "https://github.com/choewy/nest-json-queue#readme"
 }
