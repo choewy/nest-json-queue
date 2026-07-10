@@ -10,14 +10,14 @@ export class ProducerService {
     let count = 0;
 
     while (true) {
-      await this.wairFor(1);
+      await this.wairFor(200);
       await this.producer.add(++count);
     }
   }
 
-  private async wairFor(seconds: number) {
+  private async wairFor(ms: number) {
     await new Promise((resolve) => {
-      setTimeout(resolve, seconds * 1000);
+      setTimeout(resolve, ms);
     });
   }
 }

@@ -8,7 +8,7 @@ import { TestJob, TestJobData, TestJobReturnValue } from './types';
 export class ConsumerProcessor implements JsonQueueProcessorInstance<TestJobData, TestJobReturnValue> {
   constructor(private readonly consumerService: ConsumerService) {}
 
-  process(job: TestJob): TestJobReturnValue {
+  process(job: TestJob): Promise<TestJobReturnValue> {
     return this.consumerService.handleProcess(job.data);
   }
 
