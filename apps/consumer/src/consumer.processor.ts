@@ -1,21 +1,22 @@
 import { JsonQueueProcessor } from '@libs';
-import { JsonQueueJob, JsonQueueProcessorInstance } from '@libs/types';
+import { JsonQueueProcessorInstance } from '@libs/types';
 
 import { ConsumerService } from './consumer.service';
+import { TestJob, TestJobData, TestJobReturnValue } from './types';
 
 @JsonQueueProcessor('test')
-export class ConsumerProcessor implements JsonQueueProcessorInstance {
+export class ConsumerProcessor implements JsonQueueProcessorInstance<TestJobData, TestJobReturnValue> {
   constructor(private readonly consumerService: ConsumerService) {}
 
-  process(job: JsonQueueJob<unknown, unknown>) {
-    console.log({ job });
+  process(job: TestJob): TestJobReturnValue {
+    return this.consumerService.handleProcess(job.data);
   }
 
-  complete(job: JsonQueueJob<unknown, unknown>, returnValue: unknown): Promise<void> | void {
+  complete(job: TestJob, returnValue: TestJobReturnValue): Promise<void> | void {
     console.log({ job, returnValue });
   }
 
-  failed(job: JsonQueueJob<unknown, unknown>, error: unknown): Promise<void> | void {
+  failed(job: TestJob, error: unknown): Promise<void> | void {
     console.log({ job, error });
   }
 }

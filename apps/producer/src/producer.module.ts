@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 
 import { JsonQueueModule } from '@libs';
 
+import { JsonQueueJobProducer } from './json-queue-job.producer';
+import { Producer } from './producer';
 import { ProducerService } from './producer.service';
 
 @Module({
@@ -13,6 +15,12 @@ import { ProducerService } from './producer.service';
       },
     ]),
   ],
-  providers: [ProducerService],
+  providers: [
+    ProducerService,
+    {
+      provide: Producer,
+      useClass: JsonQueueJobProducer,
+    },
+  ],
 })
 export class ProducerModule {}

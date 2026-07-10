@@ -1,18 +1,17 @@
 import { Injectable } from '@nestjs/common';
 
-import { InjectJsonQueue, JsonQueue } from '@libs';
+import { Producer } from './producer';
 
 @Injectable()
 export class ProducerService {
-  constructor(
-    @InjectJsonQueue('test')
-    private readonly queue: JsonQueue,
-  ) {}
+  constructor(private readonly producer: Producer) {}
 
   async onApplicationBootstrap() {
+    let count = 0;
+
     while (true) {
       await this.wairFor(1);
-      await this.queue.add({});
+      await this.producer.add(++count);
     }
   }
 

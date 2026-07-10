@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
 
+import { TestJobData, TestJobReturnValue } from './types';
+
 @Injectable()
 export class ConsumerService {
-  getHello(): string {
-    return 'Hello World!';
+  handleProcess(data: TestJobData): TestJobReturnValue {
+    console.log(data);
+
+    return { ok: true };
   }
 }
